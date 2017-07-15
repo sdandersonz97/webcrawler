@@ -1,5 +1,13 @@
 import finder
 
+
 find = finder.Finder()  
 
-print(find.crawl_web('http://sdandersonz.pythonanywhere.com/'))
+
+
+
+
+index,graph = find.crawl_web('http://sdandersonz.pythonanywhere.com/')
+print (graph)
+rank = find.compute_ranks(graph)
+print (rank)

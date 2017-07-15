@@ -53,26 +53,48 @@ class Finder():
     def add_to_index(self, index, keyword, url):
         l = self.lookup(index,keyword)
         if  keyword in index:
-            l.append(url)
-            index[keyword]=l
-            return 
+            if not url in index[keyword]:            
+                index[keyword]=l.append(url)
+        else:
+            index[keyword]=[url]
+             
     # not found, add new keyword to index 
-        l.append(url)
-        index[keyword]=l
+    def compute_ranks(self,graph):
+        d = 0.8 #damping factor
+        numloops = 10
+
+        ranks={}
+        ngpages = len(graph)
+        for page in graph:
+            ranks[page] = 1.0 / ngpages
+        for i in range(0,numloops):
+            newranks = {}
+            for page in graph:
+                newrank = (1 - d)/ngpages
+                for node in graph:
+                    if page in graph[node]:
+                        newrank = newrank + d *(ranks[node] / len(graph[node]))
+                newranks[page] = newrank
+            ranks = newranks
+        return ranks
 
 #this procedure permit crawl the link in a web pages and define a depth of lookup
     def crawl_web(self,seed): 
         tocrawl = [seed] 
         crawled = [] 
-        index = {} 
+        index = {}
+        graph = {}
         while tocrawl: 
             page = tocrawl.pop()
             if page not in crawled: 
                 content = self.get_page(page)            
                 self.add_page_to_index(index, page, content) 
-                self.union(tocrawl, self.get_all_links(content)) 
+                outlinks = self.get_all_links(content)
+                graph[page]= outlinks
+
+                self.union(tocrawl, outlinks) 
                 crawled.append(page) 
-        return index 
+        return index,graph 
      
 
 #this permit record de number of click by url
