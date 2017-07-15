@@ -1,4 +1,6 @@
 # webcrawler
+To execute this program you need have installed python3.x
+
 Web Crawler, this program have 3 main function that are:
 1) crawl_web() // given a seed(url) returns a index and graph of urls
 2) rank_web() //given a graph return rank for every page base on the popularity of the url
