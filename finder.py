@@ -5,6 +5,15 @@ class Finder():
                 return index[keyword]
         else:
             return []
+    def lucky_search(index,ranks,keyword):
+        pages = lookup(index, keyword)
+        if not pages:
+            return None
+        best_page - page[0]
+        for candidate in pages:
+            if ranks[candidate] > ranks[best_page]:
+                best_page = candidate
+        return best_page
 
 #this procedure get the link of a tag in html <a>
     def get_next_target(self,s):
